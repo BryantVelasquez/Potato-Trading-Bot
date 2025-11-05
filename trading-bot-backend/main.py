@@ -6,7 +6,7 @@ from database.db import db
 from utils.scheduler import start_scheduler
 from bson import ObjectId
 
-app = FastAPI(title="Trading Bot API")
+app = FastAPI(title="Potato Trading Bot API")
 
 
 strategy = SMAStrategy(short_window=5, long_window=20)

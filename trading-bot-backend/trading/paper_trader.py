@@ -48,4 +48,6 @@ class PaperTrader:
     def _get_latest_price(self, symbol):
         import yfinance as yf
         data = yf.download(symbol, period="1d", interval="1m")
-        return data["Close"].iloc[-1]
+        price = data["Close"].iloc[-1]
+        return float(price)  
+
