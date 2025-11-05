@@ -1,5 +1,6 @@
 # trading/paper_trader.py
 from datetime import datetime
+from database.db import db
 
 class PaperTrader:
     def __init__(self, strategy, initial_balance=10000):
@@ -7,20 +8,38 @@ class PaperTrader:
         self.balance = initial_balance
         self.position = None  # e.g. "AAPL" or None
         self.trade_log = []
+        self.trades_collection = db["trades"]
 
     def execute_trade(self, symbol: str):
         signal = self.strategy.generate_signal(symbol)
         price = self._get_latest_price(symbol)
 
         if signal == "BUY" and self.position is None:
+            trade = {
+                "symbol": symbol,
+                "price": price,
+                "timestamp": datetime.now(),
+                "action": "BUY",
+                "balance": self.balance
+            }
+            self.trades_collection.insert_one(trade)
+            self.trade_log.append(trade)
             self.position = {"symbol": symbol, "price": price}
-            self.trade_log.append({"action": "BUY", "symbol": symbol, "price": price, "time": datetime.now()})
             return {"message": f"Bought {symbol} at {price}"}
 
         elif signal == "SELL" and self.position:
             profit = price - self.position["price"]
             self.balance += profit
-            self.trade_log.append({"action": "SELL", "symbol": symbol, "price": price, "profit": profit, "time": datetime.now()})
+            trade = {
+                "symbol": symbol,
+                "price": price,
+                "timestamp": datetime.now(),
+                "action": "SELL",
+                "balance": self.balance,
+                "profit": profit
+            }
+            self.trades_collection.insert_one(trade)
+            self.trade_log.append(trade)
             self.position = None
             return {"message": f"Sold {symbol} at {price}, Profit: {profit:.2f}"}
 
