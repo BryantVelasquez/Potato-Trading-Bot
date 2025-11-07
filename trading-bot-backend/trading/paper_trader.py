@@ -1,7 +1,6 @@
-# trading/paper_trader.py
 from datetime import datetime
 from database.db import db
-
+from colorama import Fore, Style
 class PaperTrader:
     def __init__(self, strategy, initial_balance=10000):
         self.strategy = strategy
@@ -25,6 +24,7 @@ class PaperTrader:
             self.trades_collection.insert_one(trade)
             self.trade_log.append(trade)
             self.position = {"symbol": symbol, "price": price}
+            print(Fore.GREEN + f"[SCHEDULER]: Bought {symbol} at {price}" + Style.RESET_ALL)
             return {"message": f"Bought {symbol} at {price}"}
 
         elif signal == "SELL" and self.position:
@@ -41,13 +41,15 @@ class PaperTrader:
             self.trades_collection.insert_one(trade)
             self.trade_log.append(trade)
             self.position = None
+            print(Fore.RED + f"[SCHEDULER]: Sold {symbol} at {price}, Profit {profit:.2f}" + Style.RESET_ALL)
             return {"message": f"Sold {symbol} at {price}, Profit: {profit:.2f}"}
-
+        print(Fore.YELLOW + "NO TRADE EXECUTED" + Style.RESET_ALL)
         return {"message": f"No trade executed ({signal})."}
 
     def _get_latest_price(self, symbol):
         import yfinance as yf
-        data = yf.download(symbol, period="1d", interval="1m")
+        data = yf.download(symbol, period="1d", interval="1m", auto_adjust= False)
         price = data["Close"].iloc[-1]
-        return float(price)  
+        return float(data["Close"].iloc[-1].item())
+ 
 

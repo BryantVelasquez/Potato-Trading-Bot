@@ -5,6 +5,7 @@ from strategies.sma_crossover import SMAStrategy
 from database.db import db
 from utils.scheduler import start_scheduler
 from bson import ObjectId
+from utils.scheduler import start_scheduler
 
 app = FastAPI(title="Potato Trading Bot API")
 
@@ -18,7 +19,7 @@ def home():
 
 @app.get("/trade")
 def run_trade():
-    result = bot.execute_trade("AAPL")
+    result = bot.execute_trade("NVDA")
     return result
 
 @app.get("/trades")
@@ -48,5 +49,6 @@ def get_stats():
         "balance": round(last_balance, 2)
     }
 
-# Background scheduler
-start_scheduler(bot)
+@app.on_event("startup")
+def start_bot_scheduler():
+    start_scheduler(bot)

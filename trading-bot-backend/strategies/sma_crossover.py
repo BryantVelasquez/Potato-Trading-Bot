@@ -7,7 +7,7 @@ class SMAStrategy:
         self.long_window = long_window
 
     def generate_signal(self, symbol: str):
-        data = yf.download(symbol, period="1mo", interval="1h")
+        data = yf.download(symbol, period="1mo", interval="1h", auto_adjust= False)
         data["SMA_short"] = data["Close"].rolling(window=self.short_window).mean()
         data["SMA_long"] = data["Close"].rolling(window=self.long_window).mean()
 
