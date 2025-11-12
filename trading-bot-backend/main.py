@@ -10,7 +10,7 @@ from utils.scheduler import start_scheduler
 app = FastAPI(title="Potato Trading Bot API")
 
 
-strategy = SMAStrategy(short_window=5, long_window=20)
+strategy = SMAStrategy(short_window=3, long_window=5)
 bot = PaperTrader(strategy=strategy)
 
 @app.get("/")
@@ -19,7 +19,7 @@ def home():
 
 @app.get("/trade")
 def run_trade():
-    result = bot.execute_trade("NVDA")
+    result = bot.execute_trade("BTC-USD")
     return result
 
 @app.get("/trades")

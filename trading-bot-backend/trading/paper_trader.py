@@ -5,7 +5,7 @@ class PaperTrader:
     def __init__(self, strategy, initial_balance=10000):
         self.strategy = strategy
         self.balance = initial_balance
-        self.position = None  # e.g. "AAPL" or None
+        self.position = None  # holes {'symbol': str, 'price': float}
         self.trade_log = []
         self.trades_collection = db["trades"]
 
@@ -43,13 +43,20 @@ class PaperTrader:
             self.position = None
             print(Fore.RED + f"[SCHEDULER]: Sold {symbol} at {price}, Profit {profit:.2f}" + Style.RESET_ALL)
             return {"message": f"Sold {symbol} at {price}, Profit: {profit:.2f}"}
-        print(Fore.YELLOW + "NO TRADE EXECUTED" + Style.RESET_ALL)
-        return {"message": f"No trade executed ({signal})."}
+        
+        print(Fore.YELLOW + f"NO TRADE EXECUTED FOR {symbol} ({signal})" + Style.RESET_ALL)
+        return {"message": f"No trade executed for {symbol}({signal})."}
 
     def _get_latest_price(self, symbol):
         import yfinance as yf
-        data = yf.download(symbol, period="1d", interval="1m", auto_adjust= False)
-        price = data["Close"].iloc[-1]
-        return float(data["Close"].iloc[-1].item())
+        try:
+            data = yf.download(symbol, period="3d", interval="1h", auto_adjust= False)
+            if data.empty:
+                print(f"[ERROR] No data returned for {symbol}")
+                return None
+            return float(data["Close"].iloc[-1].item())
+        except Exception as e:
+            print(f"[ERROR] FAILED TO FETCH PRICE FOR {symbol}: {e}")
+            return None
  
 
