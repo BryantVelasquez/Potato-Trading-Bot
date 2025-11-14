@@ -12,7 +12,7 @@ from strategies.sma_crossover import SMAStrategy
 # Load historical data (Yahoo max for 1h interval = 2 yrs)
 print("[INFO] Downloading historical data...")
 
-data = yf.download("BTC-USD", period="1y", interval="1h")
+data = yf.download("BTC-USD", period="1y", interval="1d")
 
 if data is None or data.empty:
     raise ValueError("No historical data returned from Yahoo Finance.")
