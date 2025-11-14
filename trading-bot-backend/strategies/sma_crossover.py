@@ -2,18 +2,17 @@ import yfinance as yf
 import pandas as pd
 import random
 class SMAStrategy:
-    def __init__(self, short_window=3, long_window=5):
+    def __init__(self, short_window=9, long_window=21):
         self.short_window = short_window
         self.long_window = long_window
 
-    def generate_signal(self, symbol: str):
+    def generate_signal(self, data: pd.DataFrame):
+        #Calculate indicators
+        data["SMA_short"] = data["Close"].rolling(self.short_window).mean()
+        data["SMA_long"] = data["Close"].rolling(self.long_window).mean()
         
-        data = yf.download(symbol, period="1d", interval="5m", auto_adjust= False)
-        data["SMA_short"] = data["Close"].rolling(window=self.short_window).mean()
-        data["SMA_long"] = data["Close"].rolling(window=self.long_window).mean()
-
+        # Need at least 2 rows to compare
         if len(data) < 2:
-            print(f"[WARN] NOT ENOUGH ROWS TO COMPARE SMA CROSSOVER FOR {symbol}")
             return None
 
         #Use to compare prev short/long and curr short/long
@@ -22,9 +21,10 @@ class SMAStrategy:
         prev_long = data["SMA_long"].iloc[-2]
         curr_long = data["SMA_long"].iloc[-1]
 
-
+        #Buy crossover
         if prev_short < prev_long and curr_short > curr_long:
             return "BUY" # short SMA crossed above long SMA
+        #Sell crossover
         elif prev_short > prev_long and curr_short < curr_long :
             return "SELL" # short SMA below long SMA
         else:
