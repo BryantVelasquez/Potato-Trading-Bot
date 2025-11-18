@@ -13,7 +13,7 @@ class Backtester:
         initial_balance,
         fee_rate=0.0005,        # 0.05% fee (binance)
         slippage_rate=0.0002,   # 0.02% slippage
-        risk_per_trade=1.0      # % of account to use per trade (1.0 = 1%)
+        risk_per_trade=20.0      # % of account to use per trade (1.0 = 1%)
     ):
         self.strategy = strategy
         self.initial_balance = initial_balance
