@@ -2,6 +2,7 @@ from datetime import datetime
 from database.db import db
 from colorama import Fore, Style
 import yfinance as yf
+import pandas as pd
 class PaperTrader:
     def __init__(self, strategy, initial_balance=10000):
         self.strategy = strategy
@@ -13,6 +14,8 @@ class PaperTrader:
     def execute_trade(self, symbol: str):
         # Load only ONE dataset for both signal and price
         data = yf.download(symbol, period="3d", interval="5m", auto_adjust=False)
+        if isinstance(data.columns, pd.MultiIndex):
+            data.columns = [col[0] for col in data.columns]
         if data.empty:
             print("[ERROR] NO DATA")
             return {"message": "No data returned"}
