@@ -33,7 +33,6 @@ POTATO-TRADING-BOT/
     │
     ├── trading/
     │   ├── Backtester.py          # Backtesting engine class
-    │   ├── logger.py              # Logging utilities
     │   └── paper_trader.py        # Paper trading engine
     │
     ├── utils/
@@ -41,8 +40,6 @@ POTATO-TRADING-BOT/
     │
     ├── main.py                    # Application entry point
     ├── requirements.txt           # Python dependencies
-    ├── .env                       # Environment variables
-    └── .gitignore
 ```
 
 ---
@@ -77,9 +74,6 @@ Contains the SMA crossover strategy logic. Returns BUY/SELL/HOLD based on moving
 
 Handles historical evaluation of any strategy passed to it. Tracks balance, P/L, trade count, and more.
 
-#### `logger.py`
-
-Simple logging abstraction for file/db logs.
 
 #### `paper_trader.py`
 
