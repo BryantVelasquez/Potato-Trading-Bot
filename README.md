@@ -10,7 +10,7 @@ python -m venv .venv
 pip install -r trading-bot-backend\requirements.txt
 
 # keep .env in repo root so python-dotenv can load it
-uvicorn main:app --app-dir trading-bot-backend --reload
+python -m uvicorn main:app --app-dir trading-bot-backend --reload
 ```
 
 Endpoints:
