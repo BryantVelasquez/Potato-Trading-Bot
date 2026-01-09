@@ -12,13 +12,6 @@ pip install -r trading-bot-backend\requirements.txt
 
 python -m uvicorn main:app --app-dir trading-bot-backend --reload
 ```
-
-Endpoints:
-- http://127.0.0.1:8000/
-- http://127.0.0.1:8000/trade
-- http://127.0.0.1:8000/trades
-- http://127.0.0.1:8000/stats
-
 ## Run the backtest script
 
 ```powershell
