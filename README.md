@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Potato-Trading-Bot
 
 ## Run the API (FastAPI + scheduler)
@@ -148,4 +147,3 @@ Backend startup file. Loads environment variables, connects to DB, starts schedu
    * Max drawdown
    * Win/loss ratio
    * Number
->>>>>>> 124a40461d7ac13d0c71b3ed450292086591b96c
