@@ -4,12 +4,12 @@
 
 PowerShell:
 ```powershell
-# from C:\Users\God\Documents\PotatoBot\Potato-Trading-Bot
+
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r trading-bot-backend\requirements.txt
 
-# keep .env in repo root so python-dotenv can load it
+
 python -m uvicorn main:app --app-dir trading-bot-backend --reload
 ```
 
